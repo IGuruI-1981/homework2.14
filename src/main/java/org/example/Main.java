@@ -1,38 +1,20 @@
 package org.example;
 
+
+
 public class Main {
     public static void main(String[] args) {
-        StringList stringList = new StringListImpl();
+        IntegerList integerList = new IntegerListImpl();
 
-        stringList.add("34");
-        stringList.add("54");
-        stringList.add("64");
-        stringList.add("84");
-
-        stringList.add(1, "45");
-
-        for (int i = 0; i < stringList.size(); i++) {
-            System.out.print(stringList.get(i) + " ");
-        }
-        System.out.println();
-        stringList.remove(3);
-        stringList.remove("54");
-        System.out.println("=====");
+        Sorting sorting = new Sorting();
 
 
-        for (int i = 0; i < stringList.size(); i++) {
-            System.out.print(stringList.get(i) + " ");
-        }
-        System.out.println();
-        System.out.println("=====");
-
-        stringList.clear();
-
-        for (int i = 0; i < stringList.size(); i++) {
-            System.out.println(stringList.get(i));
-        }
-        System.out.println("Массив пустой");
-
+        double timeSortBubble = sorting.timeSorting(5, Sorting::sortBubble);
+        System.out.println("Среднее время соритровки пузырьком: " + timeSortBubble + " мс");
+        double timeSortSelection = sorting.timeSorting(5, Sorting::sortSelection);
+        System.out.println("Среднее время соритровки выбором: " + timeSortSelection + " мс");
+        double timeSortInsertion = sorting.timeSorting(5, Sorting::sortInsertion);
+        System.out.println("Среднее время соритровки вставкой: " + timeSortInsertion + " мс");
 
     }
 }
