@@ -2,27 +2,27 @@ package org.example;
 
 import java.util.Objects;
 
-public class StringListImpl implements StringList{
+public class IntegerListImpl implements IntegerList {
 
-    private static final int arraySize = 10;
+    private static final int ARRAY_SIZE = 10;
 
-    private String[] array;
+    private Integer[] array;
 
     private int currentSize;
 
-    public StringListImpl() {
-        this(arraySize) ;
+    public IntegerListImpl() {
+        this(ARRAY_SIZE) ;
     }
 
-    public StringListImpl(int n) {
+    public IntegerListImpl(int n) {
         if (n < 0) {
             throw new IllegalArgumentException("Рамер массива должен быть положительным");
         }
-        array = new String[n];
+        array = new Integer[n];
         currentSize = 0;
     }
 
-    public void cheсkItemNull(String item) {
+    public void cheсkItemNull(Integer item) {
         if (Objects.isNull(item)) {
             throw new IllegalArgumentException("Нельзя хранить null");
         }
@@ -35,14 +35,26 @@ public class StringListImpl implements StringList{
         }
     }
 
+    public static void sortInsertion(Integer[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            int temp = arr[i];
+            int j = i;
+            while (j > 0 && arr[j - 1] >= temp) {
+                arr[j] = arr[j - 1];
+                j--;
+            }
+            arr[j] = temp;
+        }
+    }
+
 
     @Override
-    public String add(String item) {
+    public Integer add(Integer item) {
         return add(currentSize,item);
     }
 
     @Override
-    public String add(int index, String item) {
+    public Integer add(int index, Integer item) {
         if (currentSize >= array.length) {
             throw new IllegalArgumentException("Массив полон");
         }
@@ -58,7 +70,7 @@ public class StringListImpl implements StringList{
     }
 
     @Override
-    public String set(int index, String item) {
+    public Integer set(int index, Integer item) {
         cheсkItemNull(item);
         checkNegativIndex(index);
         if (index >= currentSize) {
@@ -68,7 +80,7 @@ public class StringListImpl implements StringList{
     }
 
     @Override
-    public String remove(String item) {
+    public Integer remove(Integer item) {
         int indexItem = indexOf(item);
         if (indexItem == -1) {
             throw new IllegalArgumentException("Элемент не найден");
@@ -77,24 +89,45 @@ public class StringListImpl implements StringList{
     }
 
     @Override
-    public String remove(int index) {
+    public Integer remove(int index) {
         checkNegativIndex(index);
         if (index >= currentSize) {
             throw new IllegalArgumentException("Индекс выходит за пределы размера массива");
         }
-        String removed = array[index];
+        Integer removed = array[index];
         System.arraycopy(array,index+1,array,index,currentSize-index-1);
         array[--currentSize] = null;
         return removed;
     }
 
     @Override
-    public boolean contains(String item) {
-        return indexOf(item) != -1;
+    public boolean contains(Integer item) {
+        cheсkItemNull(item);
+
+        Integer[] arrayForContains = toArray();
+        sortInsertion(arrayForContains);
+
+        int min = 0;
+        int max = arrayForContains.length - 1;
+
+        while (min <= max) {
+            int mid = (min + max) / 2;
+
+            if (item.equals(arrayForContains[mid])) {
+                return true;
+            }
+
+            if (item < arrayForContains[mid]) {
+                max = mid - 1;
+            } else {
+                min = mid + 1;
+            }
+        }
+        return false;
     }
 
     @Override
-    public int indexOf(String item) {
+    public int indexOf(Integer item) {
         cheсkItemNull(item);
         int index= -1;
         for (int i = 0; i < currentSize; i++) {
@@ -107,7 +140,7 @@ public class StringListImpl implements StringList{
     }
 
     @Override
-    public int lastIndexOf(String item) {
+    public int lastIndexOf(Integer item) {
         cheсkItemNull(item);
         int index= -1;
         for (int i = currentSize - 1; i >= 0; i--) {
@@ -120,7 +153,7 @@ public class StringListImpl implements StringList{
     }
 
     @Override
-    public String get(int index) {
+    public Integer get(int index) {
         checkNegativIndex(index);
         if (index >= currentSize) {
             throw new IllegalArgumentException("Индекс выходит за пределы размера массива");
@@ -129,7 +162,7 @@ public class StringListImpl implements StringList{
     }
 
     @Override
-    public boolean equals(StringList otherList) {
+    public boolean equals(IntegerList otherList) {
         if (size() != otherList.size()) {
             return false;
         }
@@ -161,8 +194,8 @@ public class StringListImpl implements StringList{
     }
 
     @Override
-    public String[] toArray() {
-        String[] newArray = new String[currentSize];
+    public Integer[] toArray() {
+        Integer[] newArray = new Integer[currentSize];
         System.arraycopy(array,0,newArray,0,currentSize);
         return newArray;
     }
