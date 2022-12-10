@@ -120,11 +120,14 @@ public class IntegerListTest {
     }
 
     @Test
-    void addNegativ2Test() {
+    void addPozitiv2Test() {
         Integer[] arrayTest = {1, 2, 3, 4, 5, 6,7,8,9,10};
         add(arrayTest);
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(()-> integerList.add(11));
 
+        integerList.add(2, 7);
+        assertThat(integerList.size()).isEqualTo(arrayTest.length + 1);
+        assertThat(integerList.get(2)).isEqualTo(7);
+        assertThat(integerList.get(10)).isEqualTo(10);
     }
 
 

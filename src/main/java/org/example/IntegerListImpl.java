@@ -48,6 +48,13 @@ public class IntegerListImpl implements IntegerList {
     }
 
 
+
+    private void grow() {
+        Integer[] newArray = new Integer[(int)(array.length * 1.5)];
+        System.arraycopy(array,0,newArray,0,currentSize);
+        array = newArray;
+    }
+
     @Override
     public Integer add(Integer item) {
         return add(currentSize,item);
@@ -56,7 +63,7 @@ public class IntegerListImpl implements IntegerList {
     @Override
     public Integer add(int index, Integer item) {
         if (currentSize >= array.length) {
-            throw new IllegalArgumentException("Массив полон");
+            grow();
         }
         cheсkItemNull(item);
         checkNegativIndex(index);
@@ -105,7 +112,7 @@ public class IntegerListImpl implements IntegerList {
         cheсkItemNull(item);
 
         Integer[] arrayForContains = toArray();
-        sortInsertion(arrayForContains);
+        Sorting.quickSort(arrayForContains,0,arrayForContains.length-1);
 
         int min = 0;
         int max = arrayForContains.length - 1;
